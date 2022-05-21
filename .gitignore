@@ -1,0 +1,5 @@
+*.iml
+*.lock
+*.bin
+/build
+/.idea

@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'id.luckynetwork.dev.novenag.injectoragent'
+version '1.0-SNAPSHOT'
+
+jar {
+    manifest {
+        attributes 'Launcher-Agent-Class': 'id.luckynetwork.dev.novenag.injectoragent.NovenaInjector'
+        attributes 'Agent-Class': 'id.luckynetwork.dev.novenag.injectoragent.NovenaInjector'
+        attributes 'Premain-Class': 'id.luckynetwork.dev.novenag.injectoragent.NovenaInjector'
+    }
+
+    archiveFileName = "NovenaInjector.jar"
+}
+
+java.sourceCompatibility = JavaVersion.VERSION_1_8
