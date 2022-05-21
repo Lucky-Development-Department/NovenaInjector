@@ -2,12 +2,19 @@ package id.luckynetwork.dev.novenag.injectoragent;
 
 import java.lang.instrument.Instrumentation;
 import java.util.jar.JarFile;
-import java.util.logging.Logger;
 
 public class NovenaInjector {
 
-    private static final Logger logger = Logger.getLogger("NovenaInjector");
     public static Instrumentation instrumentation;
+    public static String splitter;
+
+    static {
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            splitter = "\\";
+        } else {
+            splitter = "/";
+        }
+    }
 
     public static void premain(String agentArgs, Instrumentation inst) {
         NovenaInjector.instrumentation = inst;
@@ -24,8 +31,8 @@ public class NovenaInjector {
      */
     public static void appendJarFile(JarFile file) {
         if (instrumentation != null) {
-            String strippedJarName = file.getName().substring(file.getName().lastIndexOf("\\") + 1);
-            logger.info("Appending jar file to system class loader: " + strippedJarName);
+            String strippedJarName = file.getName().substring(file.getName().lastIndexOf(splitter) + 1);
+            System.out.println("[NovenaInjector] Appending jar file to system class loader: " + strippedJarName);
 
             instrumentation.appendToSystemClassLoaderSearch(file);
         }
