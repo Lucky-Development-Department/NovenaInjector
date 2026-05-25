@@ -19,7 +19,7 @@ NovenaInjector.appendJarFile(JarFile) #Injects
 ### Method Example
 ```java
 public void injectJar(File file) {
-	if (file.getName().endsWith(".jar") {
+	if (file.getName().endsWith(".jar")) {
 		JarFile jarFile = new JarFile(file);
 		NovenaInjector.appendJarFile(jarFile);
 	}

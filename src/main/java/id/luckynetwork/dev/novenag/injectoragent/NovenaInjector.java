@@ -60,7 +60,7 @@ public class NovenaInjector {
         String version = fileName.substring(fileName.lastIndexOf("-") + 1);
         version = removeSuffixFromVersionStringUsingRegex(version);
 
-        boolean unknownVersion = version.equals("") || version.matches("[a-zA-Z]+");
+        boolean unknownVersion = version.equals("");
 
         String jarName;
         if (unknownVersion) jarName = fileName.replace(".jar", "");
