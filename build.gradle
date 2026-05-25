@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'id.luckynetwork.dev.novenag.injectoragent'
-version '1.0-SNAPSHOT'
+version '4.0'
 
 jar {
     manifest {
