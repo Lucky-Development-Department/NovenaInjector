@@ -9,7 +9,7 @@ public class NovenaInjector {
 
     private static final List<JarFileInfo> loadedJars = new ArrayList<>();
     private static final String SPLITTER;
-    public static Instrumentation instrumentation;
+    public static volatile Instrumentation instrumentation;
 
     static {
         // Checking if the operating system is windows or not.
@@ -50,7 +50,7 @@ public class NovenaInjector {
      * @param file The JarFile that is being loaded
      * @return A boolean value.
      */
-    private static boolean canLoad(JarFile file) {
+    private static synchronized boolean canLoad(JarFile file) {
         // mongo-java-driver-3.12.11.jar = 3.12.11
         // jedis-3.7.0.jar = 3.7.0
         // gson-2.9.0.jar = 2.9.0
@@ -96,13 +96,20 @@ public class NovenaInjector {
             }
 
             for (int i = 0; i < loadedVersion.length; i++) {
-                if (Integer.parseInt(loadedVersion[i]) > Integer.parseInt(fileVersion[i])) {
+                int loaded = Integer.parseInt(loadedVersion[i]);
+                int incoming = Integer.parseInt(fileVersion[i]);
+                if (loaded > incoming) {
                     System.out.println("[NovenaInjector] Duplicate loaded jar version is higher than the one from the JarFile: " + jarName);
                     return false;
                 }
+                if (incoming > loaded) {
+                    System.out.println("[NovenaInjector] Upgrading duplicate loaded jar to higher version from the JarFile: " + jarName);
+                    jarFileInfo.setVersion(version);
+                    return true;
+                }
             }
 
-            System.out.println("[NovenaInjector] Duplicate loaded jar version is lower than the one from the JarFile: " + jarName);
+            System.out.println("[NovenaInjector] Duplicate loaded jar version is the same as the one from the JarFile: " + jarName);
             return false;
         }
 
